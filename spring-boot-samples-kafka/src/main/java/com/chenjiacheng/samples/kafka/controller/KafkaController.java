@@ -1,8 +1,8 @@
 package com.chenjiacheng.samples.kafka.controller;
 
-import com.chenjiacheng.samples.kafka.service.UserTopicProducerService;
 import com.chenjiacheng.samples.kafka.service.OrderTopicProducerService;
 import com.chenjiacheng.samples.kafka.service.ProductTopicProducerService;
+import com.chenjiacheng.samples.kafka.service.UserTopicProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

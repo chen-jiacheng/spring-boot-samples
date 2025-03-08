@@ -19,7 +19,7 @@
             </Policies>
             <DefaultRolloverStrategy max="10">
                 <Delete basePath="${LOG_PATH}" maxDepth="10">
-                    <IfLastModified age="30d" />
+                    <IfLastModified age="30d"/>
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>

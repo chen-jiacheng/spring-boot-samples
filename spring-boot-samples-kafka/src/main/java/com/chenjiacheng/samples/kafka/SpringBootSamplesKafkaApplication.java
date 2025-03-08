@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0.0
  */
 @Slf4j
+// @SpringBootApplication(exclude = {KafkaAutoConfiguration.class})
 @SpringBootApplication
 public class SpringBootSamplesKafkaApplication {
     public static void main(String[] args) {

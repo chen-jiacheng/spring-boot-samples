@@ -10,6 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserProducerListener implements ProducerListener<String, String> {
 
+/*    @Override
+    public void onSuccess(String topic, Integer partition, String key, String value, RecordMetadata recordMetadata) {
+        log.info("User message sent successfully: {}", value);
+    }
+
+    @Override
+    public void onError(String topic, Integer partition, String key, String value, Exception exception) {
+        log.error("Failed to send user message: {}", value, exception);
+    }
+
+    @Override
+    public boolean isInterestedInSuccess() {
+        return true;
+    }*/
+
+
     @Override
     public void onSuccess(ProducerRecord<String, String> producerRecord, RecordMetadata recordMetadata) {
         log.info("User message sent successfully: {}", producerRecord.value());
