@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="TRACE" monitorInterval="30">
+<Configuration status="INFO" monitorInterval="30">
     <Properties>
         <Property name="PROJECT_NAME">spring-boot-samples-redis</Property>
         <Property name="LOG_PATH">./data/logs</Property>
