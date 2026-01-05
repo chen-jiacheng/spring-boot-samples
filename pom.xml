@@ -12,6 +12,7 @@
         <module>spring-boot-samples-kafka</module>
         <module>spring-boot-samples-redis</module>
         <module>spring-boot-samples-mybatis</module>
+        <module>spring-boot-samples-crypt</module>
     </modules>
 
     <properties>

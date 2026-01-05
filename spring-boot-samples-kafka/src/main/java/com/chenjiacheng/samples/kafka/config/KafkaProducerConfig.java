@@ -72,7 +72,7 @@ public class KafkaProducerConfig {
     public KafkaTemplate<String, String> orderKafkaTemplate() {
         KafkaTemplate<String, String> kafkaTemplate = new KafkaTemplate<>(orderProducerFactory());
         kafkaTemplate.setProducerListener(orderProducerListener);
-        kafkaTemplate.setDefaultTopic("order");
+        kafkaTemplate.setDefaultTopic("marketing_coupon_product_couponbatch_info");
         return kafkaTemplate;
     }
 

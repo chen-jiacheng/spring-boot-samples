@@ -8,31 +8,31 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class UserProducerListener implements ProducerListener<String, String> {
+public class UserProducerListener implements ProducerListener<String,String> {
 
-/*    @Override
-    public void onSuccess(String topic, Integer partition, String key, String value, RecordMetadata recordMetadata) {
-        log.info("User message sent successfully: {}", value);
-    }
+//    @Override
+//    public void onSuccess(String topic, Integer partition, String key, String value, RecordMetadata recordMetadata) {
+//        log.info("User message sent successfully: {}", value);
+//    }
+//
+//    @Override
+//    public void onError(String topic, Integer partition, String key, String value, Exception exception) {
+//        log.error("Failed to send user message: {}", value, exception);
+//    }
+//
+//    @Override
+//    public boolean isInterestedInSuccess() {
+//        return true;
+//    }
+
 
     @Override
-    public void onError(String topic, Integer partition, String key, String value, Exception exception) {
-        log.error("Failed to send user message: {}", value, exception);
-    }
-
-    @Override
-    public boolean isInterestedInSuccess() {
-        return true;
-    }*/
-
-
-    @Override
-    public void onSuccess(ProducerRecord<String, String> producerRecord, RecordMetadata recordMetadata) {
+    public void onSuccess(ProducerRecord producerRecord, RecordMetadata recordMetadata) {
         log.info("User message sent successfully: {}", producerRecord.value());
     }
 
     @Override
-    public void onError(ProducerRecord<String, String> producerRecord, RecordMetadata recordMetadata, Exception exception) {
+    public void onError(ProducerRecord producerRecord, RecordMetadata recordMetadata, Exception exception) {
         log.error("Failed to send user message: {}", producerRecord.value(), exception);
     }
 
