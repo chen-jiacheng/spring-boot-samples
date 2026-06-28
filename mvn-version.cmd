@@ -61,13 +61,15 @@ REM ---- 交互式选择模式 ----
 if not defined MODE (
     echo.
     echo 请选择升级模式:
-    echo   1^) 自动模式 (auto^)  - 自动递增版本号
-    echo   2^) 手动模式 (manual^) - 输入自定义版本号
+    echo   1^) 自动模式 (auto^)    - 自动递增版本号
+    echo   2^) 手动模式 (manual^)   - 输入自定义版本号
+    echo   3^) 快照模式 (snapshot^) - 添加或移除 SNAPSHOT 标识
     echo.
-    set /p "mode_choice=请输入选择 [1/2] (默认: 1): "
+    set /p "mode_choice=请输入选择 [1/2/3] (默认: 1): "
     if "!mode_choice!"=="" set "mode_choice=1"
     if "!mode_choice!"=="1" set "MODE=auto"
     if "!mode_choice!"=="2" set "MODE=manual"
+    if "!mode_choice!"=="3" set "MODE=snapshot"
     if not defined MODE (
         echo [ERROR] 无效选择: !mode_choice!
         exit /b 1
@@ -77,7 +79,8 @@ if not defined MODE (
 REM ---- 确定目标版本号 ----
 if /i "!MODE!"=="auto" goto :mode_auto
 if /i "!MODE!"=="manual" goto :mode_manual
-echo [ERROR] 无效的模式: !MODE! ^(可选: auto, manual^)
+if /i "!MODE!"=="snapshot" goto :mode_snapshot
+echo [ERROR] 无效的模式: !MODE! ^(可选: auto, manual, snapshot^)
 exit /b 1
 
 :mode_auto
@@ -127,6 +130,29 @@ if errorlevel 1 (
     exit /b 1
 )
 set "TARGET_VERSION=!MANUAL_VERSION!"
+goto :mode_done
+
+:mode_snapshot
+REM 根据当前版本是否有 SNAPSHOT 后缀，提供添加/移除选项
+if defined VER_SUFFIX (
+    REM 当前有 -SNAPSHOT，提供移除选项
+    set "SNAP_ACTION=remove"
+    set "TARGET_VERSION=!VER_MAJOR!.!VER_MINOR!.!VER_PATCH!"
+    if "!VER_PATCH!"=="0" (
+        REM X.Y.0 简化为 X.Y
+        if "!VER_MINOR!"=="0" (
+            set "TARGET_VERSION=!VER_MAJOR!"
+        ) else (
+            set "TARGET_VERSION=!VER_MAJOR!.!VER_MINOR!"
+        )
+    )
+    echo [INFO]  将移除 SNAPSHOT 标识: !CURRENT_VERSION! -^> !TARGET_VERSION!
+) else (
+    REM 当前无 -SNAPSHOT，提供添加选项
+    set "SNAP_ACTION=add"
+    set "TARGET_VERSION=!VER_MAJOR!.!VER_MINOR!.!VER_PATCH!-SNAPSHOT"
+    echo [INFO]  将添加 SNAPSHOT 标识: !CURRENT_VERSION! -^> !TARGET_VERSION!
+)
 goto :mode_done
 
 :mode_done
@@ -243,15 +269,16 @@ REM ============================================================
 echo 用法: %~nx0 [选项]
 echo.
 echo 选项:
-echo   -m, --mode ^<manual^|auto^>          升级模式
-echo   -t, --type ^<major^|minor^|patch^>    自动模式下的升级类型 (默认: patch^)
-echo   -v, --version ^<X.Y.Z[-SNAPSHOT]^>   手动模式下的版本号
-echo   -s, --skip-compile                跳过编译验证
-echo   -h, --help                      显示帮助信息
+echo   -m, --mode ^<auto^|manual^|snapshot^>  升级模式
+echo   -t, --type ^<major^|minor^|patch^>      自动模式下的升级类型 (默认: patch^)
+echo   -v, --version ^<X.Y.Z[-SNAPSHOT]^>     手动模式下的版本号
+echo   -s, --skip-compile                  跳过编译验证
+echo   -h, --help                        显示帮助信息
 echo.
 echo 示例:
 echo   %~nx0                                交互式选择
 echo   %~nx0 -m auto                        自动补丁版本+1
 echo   %~nx0 -m auto -t minor               自动次版本号+1
 echo   %~nx0 -m manual -v 2.0.0-SNAPSHOT    手动设置版本号
+echo   %~nx0 -m snapshot                    切换 SNAPSHOT 标识
 exit /b 0
